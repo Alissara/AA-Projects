@@ -120,17 +120,15 @@ def permutations(array)
   total_permutations = []
   perms.each do |perm|
     (0..perm.length).each do |i|
-      total_permutations <<  perm[0 ... i]+ [first] + perm[i .. -1]
+      total_permutations <<  perm[0...i] + [first] + perm[i..-1]
     end
 
   end
   total_permutations
 end
 
-
-
-p [1, 2, 3, 4].permutation.to_a
-p permutations([1, 2, 3, 4]).sort
+# p [1, 2, 3, 4].permutation.to_a
+# p permutations([1, 2, 3, 4]).sort
 p permutations([1, 2, 3, 4]).sort == [1, 2, 3, 4].permutation.to_a
 
 
@@ -139,14 +137,14 @@ def bsearch(array, target)
   return nil if array.empty?
 
 
-  n = array.length / 2
-  if target == array[n]
-    n
-  elsif target < array[n]
-    bsearch(array[0...n], target)
-  elsif target > array[n]
-    sub = bsearch(array[n + 1..-1], target)
-    sub.nil? ? nil : sub + n + 1
+  mid = array.length / 2
+  if target == array[mid]
+    mid
+  elsif target < array[mid]
+    bsearch(array[0...mid], target)
+  elsif target > array[mid]
+    sub = bsearch(array[mid + 1..-1], target)
+    sub.nil? ? nil : sub + (mid + 1)
   end
 end
 
@@ -159,20 +157,27 @@ end
 # p bsearch([1, 2, 3, 4, 5, 7], 6) # => nil
 
 def merge_sort(arr)
+  return arr if arr.length <= 1
+  mid = arr.length / 2
+  left = merge_sort(arr[0...mid])
+  right = merge_sort(arr[mid..-1])
+
+  merge(left, right)
 end
 
-def merge(arr1, arr2)
-  new_arr = []
-  until arr1.empty? && arr2.empty?
-    if !arr1.nil? || arr1[0] < arr2[0]
-      new_arr << arr1.shift
-    elsif !arr2.nil? || arr1[0] >= arr2[0]
-      new_arr << arr2.shift
+def merge(left, right)
+  merged = []
+
+  until left.empty? || right.empty?
+    if left.first < right.first
+      merged << left.shift
+    else
+      merged << right.shift
     end
   end
-  new_arr
+
+  merged.concat(left).concat(right)
 end
 
-# arr1 = [5, 3, 7, 2]
-# arr2 = [9, 6, 4, 8]
-# p merge(arr1, arr2)
+
+p merge_sort([5, 3, 7, 9, 6, 4, 8]) == [5, 3, 7, 9, 6, 4, 8].sort
