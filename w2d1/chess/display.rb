@@ -1,5 +1,6 @@
 require 'colorize'
 require_relative 'cursor'
+require_relative 'board'
 
 class Display
   attr_reader :board, :cursor
@@ -20,9 +21,9 @@ class Display
       row.map.with_index do |piece, c|
 
         if [r, c] == @cursor.cursor_pos
-          bg = {:background => :green}
+          bg = { :background => :green }
         elsif (r + c).odd?
-          bg = {:background => :light_blue}
+          bg = { :background => :light_blue }
         end
 
         piece.to_s.colorize(bg)
@@ -37,4 +38,17 @@ class Display
 
 
 
+end
+
+
+
+
+
+if __FILE__ == $PROGRAM_NAME
+  b = Board.new
+  d = Display.new(b)
+  while true
+    d.render
+    d.cursor.get_input
+  end
 end

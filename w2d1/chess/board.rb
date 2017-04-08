@@ -1,6 +1,4 @@
 require_relative 'piece'
-require_relative 'display'
-require_relative 'cursor'
 
 class Board
   attr_reader :grid
@@ -13,21 +11,27 @@ class Board
   def populate
     (0..7).each do |row|
       (0..7).each do |col|
-        @grid[row][col] = Piece.new
+        if row == 0
+          @grid[row][col] = Pawn.new(:red, self, [row, col])
+        elsif row == 1
+          @grid[row][col] = Pawn.new(:red, self, [row, col])
+        elsif row == 6
+          @grid[row][col] = Pawn.new(:black, self, [row, col])
+        elsif row == 7
+          @grid[row][col] = Pawn.new(:black, self, [row, col])
+        else
+          @grid[row][col] = NullPiece.instance
+        end
       end
     end
   end
 
   def [](pos)
-    raise 'invalid pos' unless in_bounds?(pos)
-
     row, col = pos
     @grid[row][col]
   end
 
   def []=(pos, piece)
-    raise 'invalid pos' unless in_bounds?(pos)
-
     row, col = pos
     @grid[row][col] = piece
   end

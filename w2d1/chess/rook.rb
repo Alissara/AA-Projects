@@ -1,3 +1,6 @@
+require_relative 'piece'
+require_relative 'slide'
+
 class Rook < Piece
   include SlidingPiece
 
@@ -6,6 +9,7 @@ class Rook < Piece
   end
 
   def move_dirs
+    horizontal_dirs
   end
 
 end

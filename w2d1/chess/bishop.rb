@@ -1,5 +1,5 @@
 require_relative 'piece'
-require_relative 'sliding'
+require_relative 'slide'
 
 class Bishop < Piece
   include SlidingPiece
@@ -9,6 +9,7 @@ class Bishop < Piece
   end
 
   def move_dirs
+    diagonal_dirs
   end
 
 
