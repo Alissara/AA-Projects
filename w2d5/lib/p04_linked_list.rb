@@ -16,6 +16,11 @@ class Link
   def remove
     # optional but useful, connects previous link to next link
     # and removes self from list.
+    self.prev.next = self.next if self.prev
+    self.next.prev = self.prev if self.next
+    self.next = nil
+    self.prev = nil
+    self
   end
 end
 
@@ -66,10 +71,12 @@ class LinkedList
 
   def append(key, val)
     new_node = Link.new(key, val)
-    last.next = new_node
-    new_node.prev = last
-    @tail.prev = new_node
+    @tail.prev.next = new_node
+    new_node.prev = @tail.prev
     new_node.next = @tail
+    @tail.prev = new_node
+
+    new_node
   end
 
   def update(key, val)
@@ -87,13 +94,12 @@ class LinkedList
     search_node = @head
     until search_node.key == "tail"
       if search_node.key == key
-        search_node.prev.next = search_node.next
-        search_node.next.prev = search_node.prev
-        break
+        search_node.remove
+        return search_node.val
       end
       search_node = search_node.next
     end
-    false
+    nil
   end
 
   def each(&proc)

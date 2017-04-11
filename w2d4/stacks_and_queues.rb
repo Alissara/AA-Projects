@@ -65,48 +65,25 @@ class StackQueue
     @dequeue_stack = MyStack.new
   end
 
-  def enqueue
-    @enqueue_stack.push
+  def enqueue(val)
+    @enqueue_stack.push(val)
   end
 
   def dequeue
 
     # moves into dequeue_stack
-    until @enqueue_stack.empty?
-      @dequeue_stack.push(@enqueue_stack.pop)
+    if @dequeue_stack.empty?
+      @dequeue_stack.push(@enqueue_stack.pop) until @enqueue_stack.empty?
     end
 
-    # grabs thing we are dequeueinig
-    first_out = @dequeue_stack.pop
-
-    # now put back into enqueue stack to retain line order
-    until @dequeue_stack.empty?
-      @enqueue_stack.push(@dequeue_stack.pop)
-    end
-
-    first_out
-  end
-
-  def peek
-    # moves into dequeue_stack
-    until @enqueue_stack.empty?
-      @dequeue_stack.push(@enqueue_stack.pop)
-    end
-
-    # find peeked element
-    peeked = @dequeue_stack.peek
-
-    # now put back into enqueue stack to retain line order
-    until @dequeue_stack.empty?
-      @enqueue_stack.push(@dequeue_stack.pop)
-    end
+    @dequeue_stack.pop
   end
 
   def size
-    @enqueue.size
+    @enqueue_stack.size + @dequeue_stack.size
   end
 
   def empty?
-    @enqueue.empty?
+    @enqueue_stack.empty? && @dequeue_stack.empty?
   end
 end
