@@ -83,7 +83,7 @@ class SQLObject
   end
 
   def attribute_values
-    attributes.values
+    self.class.columns.map { |col| self.send(col) }
   end
 
   def insert
@@ -91,19 +91,37 @@ class SQLObject
     n = self.class.columns.length
     question_marks = (["?"] * n).join(',')
     values = attribute_values
-    table = DBConnection.execute(<<-SQL, *values)
+    DBConnection.execute(<<-SQL, *values)
       INSERT INTO
-        #{self.table_name} #{col_names}
+        #{self.class.table_name} (#{col_names})
       VALUES
-        #{question_marks}
+        (#{question_marks})
     SQL
+    self.send(:id=, DBConnection.last_insert_row_id)
+
   end
 
   def update
-    # ...
+    set_line = self.class.columns.map {
+      |attr_name| "#{attr_name} = ?"
+    }.join(",")
+    id = self.id
+    values = attribute_values
+    DBConnection.execute(<<-SQL, *values)
+      UPDATE
+        #{self.class.table_name}
+      SET
+        #{set_line}
+      WHERE
+        id = #{id}
+    SQL
   end
 
   def save
-    # ...
+    if self.id.nil?
+      self.insert
+    else
+      self.update
+    end
   end
 end

@@ -89,6 +89,9 @@ def num_teachers_and_mobiles
   # NB: COUNT only counts non-NULL values.
   execute(<<-SQL)
     SELECT
+      COUNT(teachers.name), COUNT(teachers.mobile)
+    FROM
+      teachers
 
   SQL
 end
@@ -98,6 +101,14 @@ def dept_staff_counts
   # the number of staff. Structure your JOIN to ensure that the
   # Engineering department is listed.
   execute(<<-SQL)
+    SELECT
+      depts.name, COUNT(teachers.id)
+    FROM
+      depts
+    LEFT JOIN
+      teachers ON teachers.dept_id = depts.id
+    GROUP BY
+      depts.name
   SQL
 end
 
@@ -105,6 +116,15 @@ def teachers_and_divisions
   # Use CASE to show the name of each teacher followed by 'Sci' if
   # the the teacher is in dept 1 or 2 and 'Art' otherwise.
   execute(<<-SQL)
+    SELECT name,
+      CASE
+        WHEN dept_id IN (1, 2)
+          THEN 'Sci'
+        ELSE
+          'Art'
+      END
+    FROM
+      teachers
   SQL
 end
 
@@ -113,5 +133,17 @@ def teachers_and_divisions_two
   # the the teacher is in dept 1 or 2, 'Art' if the dept is 3, and
   # 'None' otherwise.
   execute(<<-SQL)
+    SELECT
+      name,
+      CASE
+        WHEN dept_id IN (1, 2)
+          THEN 'Sci'
+        WHEN dept_id = 3
+          THEN 'Art'
+        ELSE
+          'None'
+      end
+    FROM
+      teachers
   SQL
 end
