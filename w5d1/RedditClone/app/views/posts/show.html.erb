@@ -1,0 +1,18 @@
+<h1><%= @post.title %></h1>
+<h3>Author: <%= @post.author.username %></h3>
+
+<p><%= @post.url %></p>
+<br>
+<%= @post.content %>
+<br>
+<%= button_to "Edit Post", edit_post_url(@post), method: :get %>
+<%= button_to "Delete Post", post_url(@post), method: :delete %>
+
+<p>Subs</p>
+<ul>
+  <% @post.subs.each do |sub| %>
+    <li>
+      <%= link_to sub.title, sub_url(sub) %>
+    </li>
+  <% end %>  
+</ul>

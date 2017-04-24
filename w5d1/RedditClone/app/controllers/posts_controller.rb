@@ -40,8 +40,14 @@ class PostsController < ApplicationController
     end
   end
 
+  def destroy
+    @post = Post.find_by(id: params[:id])
+    @post.destroy
+    redirect_to subs_url
+  end
+
   def post_params
-    params.require(:post).permit(:title, :url, :content, :user_id)
+    params.require(:post).permit(:title, :url, :content, :user_id, sub_ids:[])
   end
 
   def require_author
