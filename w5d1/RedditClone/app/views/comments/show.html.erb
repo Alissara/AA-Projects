@@ -1,0 +1,19 @@
+<b> Reply to this comment: </b>
+
+<form action="<%=comments_url%>" method="post">
+  <input type="hidden" name="comment[post_id]" value="<%= @new_comment.post_id %>">
+  <input type="hidden" name="comment[parent_comment_id]" value="<%= @new_comment.parent_comment_id %>">
+
+  <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+
+
+  <label>
+    Body:
+    <br>
+    <textarea name="comment[body]"></textarea>
+  </label>
+
+  <br>
+
+  <input type="submit">
+</form>

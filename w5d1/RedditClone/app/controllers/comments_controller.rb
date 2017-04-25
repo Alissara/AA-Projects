@@ -1,9 +1,14 @@
 class CommentsController < ApplicationController
 
   def new
-    @post = Post.find(params[:post_id])
     @comment = Comment.new(post_id: params[:post_id])
     render :new
+  end
+
+  def show
+    @comment = Comment.find(params[:id])
+    @new_comment = @comment.child_comments.new
+    render :show
   end
 
   def create
@@ -13,7 +18,7 @@ class CommentsController < ApplicationController
     if @comment.save
       redirect_to post_url(@comment.post_id)
     else
-      render :new
+      redirect_to new_post_comment_url(@comment.post_id)
     end
   end
 
