@@ -1,0 +1,50 @@
+html, body, ul, li {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+h1 {
+  text-align: center;
+}
+
+ul {
+  border: 5px solid black;
+  list-style: none;
+  width: 300px;
+  text-align: center;
+}
+
+li {
+  border: 5px solid black;
+  background: grey;
+
+  width: 90px;
+  height: 90px;
+
+  float: left;
+}
+
+.cf:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+.hover_in {
+  background: orange;
+}
+
+.x, .o {
+  background: white;
+  font-size: 60px;
+  font-family: "Arial";
+  color: black
+}
+
+.winner-x .x,
+.winner-o .o {
+  background: green;
+  color: white;
+}
